@@ -1,0 +1,22 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo integration test
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 327066177061.dkr.ecr.ap-northeast-2.amazonaws.com
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t gamehub-message/dev --build-arg ENV=dev .
+      - docker tag gamehub-message/dev:latest 327066177061.dkr.ecr.ap-northeast-2.amazonaws.com/gamehub-message/dev:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 327066177061.dkr.ecr.ap-northeast-2.amazonaws.com/gamehub-message/dev:latest
+      - printf '[{"name":"gamehub-container-dev","imageUri":"%s"}]' 327066177061.dkr.ecr.ap-northeast-2.amazonaws.com/gamehub-message/dev:latest > imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json

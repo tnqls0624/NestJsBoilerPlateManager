@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "./node_modules/gts/",
+    "eslinet:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"]
+  }
+}
